@@ -48,27 +48,45 @@ const paperData = {
     }
 };
 
-/**
- * 核心修正：封装一个通用的图表创建函数，支持多色图例
- */
 function createBarChart(ctx, labels, data, title) {
-    // 将数据拆分为三个系列，以便显示红/蓝/灰三个图例
-    // 索引说明: 0(Base-Gray), 1(Baseline-Red), 2(STORM-Blue), 3(Baseline-Red), 4(STORM-Blue)
-    const baseData = [data[0], null, null, null, null];
-    const baselineData = [null, data[1], null, data[3], null];
-    const stormData = [null, null, data[2], null, data[4]];
+    const baseLineValue = data[0];
+    const adjustedLabels = labels.slice(1);
+    
+    // 柱状图数据：只保留对比组
+    const baselineData = [data[1], null, data[3], null];
+    const stormData = [null, data[2], null, data[4]];
+
+    // 定义一个局部插件：在图表绘制完成后画一条横线
+    const horizontalLinePlugin = {
+        id: 'horizontalLine',
+        afterDraw: (chart) => {
+            const { ctx, chartArea: { left, right }, scales: { y } } = chart;
+            const yPos = y.getPixelForValue(baseLineValue);
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.lineWidth = 2;
+            ctx.setLineDash([6, 6]); // 虚线样式
+            ctx.strokeStyle = '#94a3b8'; // 灰色
+            ctx.moveTo(left, yPos);  // 从绘图区最左侧开始
+            ctx.lineTo(right, yPos); // 到绘图区最右侧结束
+            ctx.stroke();
+            ctx.restore();
+
+            // 可选：在虚线上方写上数值标签
+            ctx.fillStyle = '#5A5A5A';
+            ctx.font = '13px Arial';
+            ctx.textAlign = 'right';
+            ctx.fillText(`Base: ${baseLineValue}`, right, yPos - 10);
+        }
+    };
 
     return new Chart(ctx, {
         type: 'bar',
+        plugins: [horizontalLinePlugin],
         data: {
-            labels: labels,
+            labels: adjustedLabels,
             datasets: [
-                {
-                    label: 'Original Model',
-                    data: baseData,
-                    backgroundColor: '#94a3b8',
-                    borderRadius: 6
-                },
                 {
                     label: 'Baseline (ToMe/EViT)',
                     data: baselineData,
@@ -76,7 +94,7 @@ function createBarChart(ctx, labels, data, title) {
                     borderRadius: 6
                 },
                 {
-                    label: 'STORM (Ours)',
+                    label: 'STORM (ToMe/EViT)',
                     data: stormData,
                     backgroundColor: '#3b82f6',
                     borderRadius: 6
@@ -87,8 +105,14 @@ function createBarChart(ctx, labels, data, title) {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: { stacked: true }, // 堆叠模式确保空位不占用宽度
-                y: { beginAtZero: true }
+                x: { 
+                    stacked: true,
+                    grid: { display: false }
+                },
+                y: { 
+                    beginAtZero: true,
+                    suggestedMax: Math.max(...data) * 1.1 
+                }
             },
             plugins: {
                 legend: {
@@ -149,7 +173,6 @@ function switchTab(tabId) {
     }
 }
 
-// 修正后的 switchResults，添加了对 e (event) 的兼容处理
 function switchResults(modelType, e) {
     const btns = document.querySelectorAll('.result-btn');
     btns.forEach(btn => {
@@ -157,7 +180,6 @@ function switchResults(modelType, e) {
         btn.classList.add('text-gray-500');
     });
     
-    // 兼容写法：如果传入了 event 则使用 event.currentTarget，否则通过 modelType 匹配
     let target = e ? e.currentTarget : null;
     if (!target) {
         btns.forEach(btn => {

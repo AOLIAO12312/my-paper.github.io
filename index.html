@@ -182,7 +182,7 @@
                             <h3 class="font-bold text-gray-900">Localized Window</h3>
                         </div>
                         <p class="text-sm text-gray-600 leading-relaxed">
-                          o prevent semantic distortion from long-range interference, STORM partitions the feature map into non-overlapping local windows. Reduction operations are strictly confined within these contiguous neighborhoods to protect fine-grained details and local coherence.
+                          To prevent semantic distortion from long-range interference, STORM partitions the feature map into non-overlapping local windows. Reduction operations are strictly confined within these contiguous neighborhoods to protect fine-grained details and local coherence.
                         </p>
                     </div>
 
@@ -255,7 +255,7 @@
               </div>
               <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm text-center">
                   <div id="stat-fps" class="text-3xl font-bold text-blue-600 mb-1">1.4x</div>
-                  <div class="text-sm font-medium text-gray-500">Inference Speedup</div>
+                  <div class="text-sm font-medium text-gray-500">Throughput Boost</div>
                   <div class="text-xs text-gray-400 mt-2">Zero Re-training Cost</div>
               </div>
           </div>
@@ -272,7 +272,7 @@
         <div class="flex flex-wrap justify-center mb-8 gap-2">
             <div class="bg-white p-1 rounded-lg border border-gray-200 inline-flex shadow-sm">
                 <button class="tab-btn active px-4 py-2 text-sm font-medium rounded-md text-blue-700 bg-blue-50" onclick="switchTab('topology')">
-                    Topology Preservation
+                    Spatial Preservation
                 </button>
                 <button class="tab-btn px-4 py-2 text-sm font-medium rounded-md text-gray-500 hover:text-gray-900" onclick="switchTab('extreme')">
                     Extreme Compression (95%)
@@ -346,7 +346,7 @@
             <h4 class="font-bold text-gray-900 mb-8 text-center text-xl">Semantic Grouping Analysis (95% Reduction)</h4>
             
             <div class="flex flex-col md:flex-row items-center justify-center gap-4 lg:gap-12">
-                <div class="flex-1 w-full max-w-[300px]">
+                <div class="flex-1 w-full max-w-[360px]">
                     <div class="relative bg-gray-50 rounded-xl border-2 border-gray-100 shadow-inner overflow-hidden group">
                         <img src="./assets/original.png" alt="Input Image" class="w-full h-auto block">
                         <div class="absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm py-2 text-white text-xs text-center">
@@ -363,7 +363,7 @@
                     </div>
                 </div>
     
-                <div class="flex-1 w-full max-w-[300px]">
+                <div class="flex-1 w-full max-w-[360px]">
                     <div class="relative bg-gray-50 rounded-xl border-2 border-blue-200 shadow-md overflow-hidden ring-4 ring-blue-50">
                         <img src="./assets/storm.png" alt="STORM Merging Result" class="w-full h-auto block">
                         <div class="absolute bottom-0 left-0 right-0 bg-blue-600/60 backdrop-blur-sm py-2 text-white text-xs text-center font-bold">
@@ -450,11 +450,10 @@
     <footer class="bg-gray-50 border-t border-gray-200 py-12">
         <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
             <div class="text-gray-500 text-sm mb-4 md:mb-0">
-                &copy; 2025 M3PO Project.
+                &copy; 2026 STORM Project.
             </div>
             <div class="flex space-x-6">
                 <a href="#" class="text-gray-400 hover:text-gray-600">Sichuan University</a>
-                <a href="#" class="text-gray-400 hover:text-gray-600">GigaAI</a>
             </div>
         </div>
     </footer>
